@@ -1,19 +1,17 @@
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
+kubectl create configmap hosts-config --from-literal=hostsfile="172.192.72.22 nginx.plataformammais-sandbox.n-mercantil.com.br"
+
+
+apiVersion: v1
+kind: Pod
 metadata:
-  name: nginx-virtualservice
-  namespace: default
+  name: busybox-hosts
 spec:
-  hosts:
-    - "nginx.example.com"  # O mesmo domínio configurado no Gateway
-  gateways:
-    - nginx-gateway
-  http:
-    - match:
-        - uri:
-            prefix: "/"  # Roteia todo o tráfego para o NGINX
-      route:
-        - destination:
-            host: nginx-service  # O nome do Service do NGINX
-            port:
-              number: 80
+  hostAliases:
+  - ip: "172.192.72.22"
+    hostnames:
+    - "nginx.plataformammais-sandbox.n-mercantil.com.br"
+  containers:
+  - name: busybox
+    image: busybox
+    command: ['sh', '-c', 'cat /etc/hosts && sleep 3600']  # Exibe o conteúdo do arquivo /etc/hosts e mantém o pod rodando
+  restartPolicy: Never
