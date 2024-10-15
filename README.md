@@ -1,22 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+  namespace: default
+spec:
+  selector:
+    app: nginx
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: istio-ingressgateway
-  namespace: istio-system
+  name: nginx-gateway
+  namespace: default
 spec:
   selector:
-    istio: ingressgateway # Seleciona o Istio ingress-gateway
+    istio: ingressgateway  # Seleciona o Ingress Gateway do Istio
   servers:
-  - port:
-      number: 443
-      name: https
-      protocol: HTTPS
-    tls:
-      mode: SIMPLE
-      credentialName: istio-ingressgateway-certs # Nome do secret criado
-    hosts:
-    - "*"
----
-kubectl create -n istio-system secret tls istio-ingressgateway-certs \
-  --key /path/to/tls.key \
-  --cert /path/to/tls.crt
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "nginx.example.com"  # Atualize com seu domínio ou use "*"
