@@ -6,7 +6,7 @@ metadata:
   labels:
     app: azure-agent-gke-dev
 spec:
-  replicas: 2 # Configuration to always keep one agent running
+  replicas: 2  # Mantenha sempre duas réplicas ativas
   selector:
     matchLabels:
       app: azure-agent-gke-dev
@@ -16,38 +16,43 @@ spec:
         app: azure-agent-gke-dev
     spec:
       containers:
-      - name: kubepodcreation
-        image: imagensmbprd.azurecr.io/agent:129813
-        env:
-          - name: AZP_URL
-            valueFrom:
-              secretKeyRef:
-                name: azdevops
-                key: AZP_URL
-          - name: AZP_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: azdevops
-                key: AZP_TOKEN
-          - name: AZP_POOL
-            valueFrom:
-              secretKeyRef:
-                name: azdevops
-                key: AZP_POOL
-        volumeMounts:
-        - mountPath: /var/run/docker.sock
-          name: docker-volume
+        - name: kubepodcreation
+          image: imagensmbprd.azurecr.io/agent:129813
+          env:
+            - name: AZP_URL
+              valueFrom:
+                secretKeyRef:
+                  name: azdevops
+                  key: AZP_URL
+            - name: AZP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: azdevops
+                  key: AZP_TOKEN
+            - name: AZP_POOL
+              valueFrom:
+                secretKeyRef:
+                  name: azdevops
+                  key: AZP_POOL
+          volumeMounts:
+            - mountPath: /var/run/docker.sock
+              name: docker-volume
       volumes:
-      - name: docker-volume
-        hostPath:
-          path: /var/run/docker.sock
-        tolerations:
-      - key: "purpose"
-        operator: "Equal"
-        value: "infra"
-        effect: "NoExecute"
+        - name: docker-volume
+          hostPath:
+            path: /var/run/docker.sock
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: layer
+                    operator: In
+                    values:
+                      - apps
       imagePullSecrets:
-      - name: docker-credentials
+        - name: docker-credentials
+
 
 
 
