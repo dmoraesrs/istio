@@ -48,3 +48,13 @@ spec:
         effect: "NoExecute"
       imagePullSecrets:
       - name: docker-credentials
+
+
+
+
+
+kubectl create secret generic azdevops \
+  --from-literal=AZP_URL='https://dev.azure.com/your-organization' \
+  --from-literal=AZP_TOKEN='your-pat-token' \
+  --from-literal=AZP_POOL='your-agent-pool' \
+  --namespace=azure-devops-agents
