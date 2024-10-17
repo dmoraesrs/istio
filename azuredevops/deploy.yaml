@@ -6,7 +6,7 @@ metadata:
   labels:
     app: azure-agent-gke-dev
 spec:
-  replicas: 2  # Mantenha sempre duas réplicas ativas
+  replicas: 2 # Configuration to always keep one agent running
   selector:
     matchLabels:
       app: azure-agent-gke-dev
@@ -16,43 +16,38 @@ spec:
         app: azure-agent-gke-dev
     spec:
       containers:
-        - name: kubepodcreation
-          image: imagensmbprd.azurecr.io/agent:129813
-          env:
-            - name: AZP_URL
-              valueFrom:
-                secretKeyRef:
-                  name: azdevops
-                  key: AZP_URL
-            - name: AZP_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: azdevops
-                  key: AZP_TOKEN
-            - name: AZP_POOL
-              valueFrom:
-                secretKeyRef:
-                  name: azdevops
-                  key: AZP_POOL
-          volumeMounts:
-            - mountPath: /var/run/docker.sock
-              name: docker-volume
+      - name: kubepodcreation
+        image: imagensmbprd.azurecr.io/agent:129813
+        env:
+          - name: AZP_URL
+            valueFrom:
+              secretKeyRef:
+                name: azdevops
+                key: AZP_URL
+          - name: AZP_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: azdevops
+                key: AZP_TOKEN
+          - name: AZP_POOL
+            valueFrom:
+              secretKeyRef:
+                name: azdevops
+                key: AZP_POOL
+        volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: docker-volume
       volumes:
-        - name: docker-volume
-          hostPath:
-            path: /var/run/docker.sock
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: layer
-                    operator: In
-                    values:
-                      - apps
+      - name: docker-volume
+        hostPath:
+          path: /var/run/docker.sock
+        tolerations:
+      - key: "purpose"
+        operator: "Equal"
+        value: "infra"
+        effect: "NoExecute"
       imagePullSecrets:
-        - name: docker-credentials
-
+      - name: docker-credentials
 
 
 
@@ -76,3 +71,48 @@ kubectl create secret generic azdevops \
                 operator: In
                 values:
                 - apps
+
+
+
+FROM ubuntu:20.04
+RUN DEBIAN_FRONTEND=noninteractive apt-get update
+RUN DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -qq --no-install-recommends \
+    apt-transport-https \
+    apt-utils \
+    ca-certificates \
+    curl \
+    git \
+    iputils-ping \
+    jq \
+    lsb-release \
+    software-properties-common \
+    libicu66 \
+    unzip \
+    gettext \
+    pip \
+    n
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" &&  unzip awscliv2.zip && ./aws/install
+
+RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && chmod 700 get_helm.sh && ./get_helm.sh
+
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && cp -r kubectl /usr/local/bin && chmod +x /usr/local/bin/kubectl
+
+RUN curl -fsSL http://get.docker.com |bash
+
+
+# Can be 'linux-x64', 'linux-arm64', 'linux-arm', 'rhel.6-x64'.
+ENV TARGETARCH=linux-x64
+
+WORKDIR /azp
+
+COPY ./start.sh .
+COPY ./CA.cer /usr/local/share/ca-certificates/mb.crt
+
+RUN update-ca-certificates 
+RUN chmod +x start.sh
+
+ENTRYPOINT [ "./start.sh" ]
