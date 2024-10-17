@@ -1,129 +1,42 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: azdevops-deployment
-  namespace: azure-devops-agents
-  labels:
-    app: azure-agent-gke-dev
-spec:
-  replicas: 2 # Configuration to always keep one agent running
-  selector:
-    matchLabels:
-      app: azure-agent-gke-dev
-  template:
-    metadata:
-      labels:
-        app: azure-agent-gke-dev
-    spec:
-      containers:
-      - name: kubepodcreation
-        image: imagensmbprd.azurecr.io/agent:129813
-        env:
-          - name: AZP_URL
-            valueFrom:
-              secretKeyRef:
-                name: azdevops
-                key: AZP_URL
-          - name: AZP_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name: azdevops
-                key: AZP_TOKEN
-          - name: AZP_POOL
-            valueFrom:
-              secretKeyRef:
-                name: azdevops
-                key: AZP_POOL
-        volumeMounts:
-        - mountPath: /var/run/docker.sock
-          name: docker-volume
-      volumes:
-      - name: docker-volume
-        hostPath:
-          path: /var/run/docker.sock
-        tolerations:
-      - key: "purpose"
-        operator: "Equal"
-        value: "infra"
-        effect: "NoExecute"
-      imagePullSecrets:
-      - name: docker-credentials
 
-
-
-
-
-kubectl create secret generic azdevops \
-  --from-literal=AZP_URL='https://dev.azure.com/your-organization' \
-  --from-literal=AZP_TOKEN='your-pat-token' \
-  --from-literal=AZP_POOL='your-agent-pool' \
-  --namespace=azure-devops-agents
-
-
-
-
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: layer
-                operator: In
-                values:
-                - apps
-
-
-
-
-
-
-FROM ubuntu:20.04
-
-# Configurações para evitar prompts interativos durante a instalação
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Atualiza os pacotes e instala dependências básicas
-RUN apt-get update && \
-    apt-get upgrade -y && \
-    apt-get install -y -qq --no-install-recommends \
-    apt-transport-https \
-    apt-utils \
-    ca-certificates \
-    curl \
-    git \
-    iputils-ping \
-    jq \
-    lsb-release \
-    software-properties-common \
-    libicu66 \
-    unzip \
-    gettext \
-    python3-pip \
-    npm \
-    python3-setuptools \
-    python3-venv && \
-    rm -rf /var/lib/apt/lists/*
-
-# Instala o AWS CLI v2
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-    unzip awscliv2.zip && ./aws/install && rm -rf awscliv2.zip aws
-
-# Instala o Helm
-RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
-    chmod +x get_helm.sh && ./get_helm.sh && rm get_helm.sh
-
-# Instala o Azure CLI
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-
-# Instala o kubectl
-RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
-    cp kubectl /usr/local/bin/ && chmod +x /usr/local/bin/kubectl && rm kubectl
-
-# Instala o Docker
-RUN curl -fsSL http://get.docker.com | bash
-
-# Define a arquitetura de destino como uma variável de ambiente
-ENV TARGETARCH=linux-x64
-
-# Define o diretório de trabalho
-WORKDIR /azp
+##[error]#5 2.478 E: Unable to locate package python3-venv
+##[error]#5 ERROR: process "/bin/sh -c apt-get update &&     apt-get upgrade -y &&     apt-get install -y -qq --no-install-recommends     apt-transport-https     apt-utils     ca-certificates     curl     git     iputils-ping     jq     lsb-release     software-properties-common     libicu66     unzip     gettext     python3-pip     npm     python3-setuptools     python3-venv" did not complete successfully: exit code: 100
+##[error]------
+##[error] > [2/8] RUN apt-get update &&     apt-get upgrade -y &&     apt-get install -y -qq --no-install-recommends     apt-transport-https     apt-utils     ca-certificates     curl     git     iputils-ping     jq     lsb-release     software-properties-common     libicu66     unzip     gettext     python3-pip     npm     python3-setuptools     python3-venv:
+##[error]2.478 E: Unable to locate package jq
+##[error]2.478 E: Unable to locate package lsb-release
+##[error]2.478 E: Unable to locate package software-properties-common
+##[error]2.478 E: Unable to locate package libicu66
+##[error]2.478 E: Unable to locate package unzip
+##[error]2.478 E: Unable to locate package gettext
+##[error]2.478 E: Unable to locate package python3-pip
+##[error]2.478 E: Unable to locate package npm
+##[error]2.478 E: Unable to locate package python3-setuptools
+##[error]2.478 E: Unable to locate package python3-venv
+##[error]------
+##[error]Dockerfile:7
+##[error]--------------------
+##[error]   6 |     # Atualiza os pacotes e instala dependências básicas
+##[error]   7 | >>> RUN apt-get update && \
+##[error]   8 | >>>     apt-get upgrade -y && \
+##[error]   9 | >>>     apt-get install -y -qq --no-install-recommends \
+##[error]  10 | >>>     apt-transport-https \
+##[error]  11 | >>>     apt-utils \
+##[error]  12 | >>>     ca-certificates \
+##[error]  13 | >>>     curl \
+##[error]  14 | >>>     git \
+##[error]  15 | >>>     iputils-ping \
+##[error]  16 | >>>     jq \
+##[error]  17 | >>>     lsb-release \
+##[error]  18 | >>>     software-properties-common \
+##[error]  19 | >>>     libicu66 \
+##[error]  20 | >>>     unzip \
+##[error]  21 | >>>     gettext \
+##[error]  22 | >>>     python3-pip \
+##[error]  23 | >>>     npm \
+##[error]  24 | >>>     python3-setuptools \
+##[error]  25 | >>>     python3-venv
+##[error]  26 |     
+##[error]--------------------
+##[error]ERROR: failed to solve: process "/bin/sh -c apt-get update &&     apt-get upgrade -y &&     apt-get install -y -qq --no-install-recommends     apt-transport-https     apt-utils     ca-certificates     curl     git     iputils-ping     jq     lsb-release     software-properties-common     libicu66     unzip     gettext     python3-pip     npm     python3-setuptools     python3-venv" did not complete successfully: exit code: 100
+##[error]The process '/bin/docker' failed with exit code 1
