@@ -1,54 +1,10 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Secret
 metadata:
-  name: azdevops-deployment
+  name: azdevops
   namespace: azure-devops-agents
-  labels:
-    app: azure-agent-gke-dev
-spec:
-  replicas: 2  # Mantenha sempre duas réplicas ativas
-  selector:
-    matchLabels:
-      app: azure-agent-gke-dev
-  template:
-    metadata:
-      labels:
-        app: azure-agent-gke-dev
-    spec:
-      containers:
-        - name: kubepodcreation
-          image: imagensmbprd.azurecr.io/agent:129813
-          env:
-            - name: AZP_URL
-              valueFrom:
-                secretKeyRef:
-                  name: azdevops
-                  key: AZP_URL
-            - name: AZP_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: azdevops
-                  key: AZP_TOKEN
-            - name: AZP_POOL
-              valueFrom:
-                secretKeyRef:
-                  name: azdevops
-                  key: AZP_POOL
-          volumeMounts:
-            - mountPath: /var/run/docker.sock
-              name: docker-volume
-      volumes:
-        - name: docker-volume
-          hostPath:
-            path: /var/run/docker.sock
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: layer
-                    operator: In
-                    values:
-                      - apps
-      imagePullSecrets:
-        - name: docker-credentials
+type: Opaque
+data:
+  AZP_URL: aHR0cHM6Ly9kZXYuYXp1cmUuY29tL3lvdXItb3JnYW5pemF0aW9u # Base64 encoded value
+  AZP_TOKEN: eW91ci1wYXQtdG9rZW4= # Base64 encoded value
+  AZP_POOL: eW91ci1hZ2VudC1wb29s # Base64 encoded value
