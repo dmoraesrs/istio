@@ -1,42 +1,45 @@
+trigger:
+  - main
 
-##[error]#5 2.478 E: Unable to locate package python3-venv
-##[error]#5 ERROR: process "/bin/sh -c apt-get update &&     apt-get upgrade -y &&     apt-get install -y -qq --no-install-recommends     apt-transport-https     apt-utils     ca-certificates     curl     git     iputils-ping     jq     lsb-release     software-properties-common     libicu66     unzip     gettext     python3-pip     npm     python3-setuptools     python3-venv" did not complete successfully: exit code: 100
-##[error]------
-##[error] > [2/8] RUN apt-get update &&     apt-get upgrade -y &&     apt-get install -y -qq --no-install-recommends     apt-transport-https     apt-utils     ca-certificates     curl     git     iputils-ping     jq     lsb-release     software-properties-common     libicu66     unzip     gettext     python3-pip     npm     python3-setuptools     python3-venv:
-##[error]2.478 E: Unable to locate package jq
-##[error]2.478 E: Unable to locate package lsb-release
-##[error]2.478 E: Unable to locate package software-properties-common
-##[error]2.478 E: Unable to locate package libicu66
-##[error]2.478 E: Unable to locate package unzip
-##[error]2.478 E: Unable to locate package gettext
-##[error]2.478 E: Unable to locate package python3-pip
-##[error]2.478 E: Unable to locate package npm
-##[error]2.478 E: Unable to locate package python3-setuptools
-##[error]2.478 E: Unable to locate package python3-venv
-##[error]------
-##[error]Dockerfile:7
-##[error]--------------------
-##[error]   6 |     # Atualiza os pacotes e instala dependências básicas
-##[error]   7 | >>> RUN apt-get update && \
-##[error]   8 | >>>     apt-get upgrade -y && \
-##[error]   9 | >>>     apt-get install -y -qq --no-install-recommends \
-##[error]  10 | >>>     apt-transport-https \
-##[error]  11 | >>>     apt-utils \
-##[error]  12 | >>>     ca-certificates \
-##[error]  13 | >>>     curl \
-##[error]  14 | >>>     git \
-##[error]  15 | >>>     iputils-ping \
-##[error]  16 | >>>     jq \
-##[error]  17 | >>>     lsb-release \
-##[error]  18 | >>>     software-properties-common \
-##[error]  19 | >>>     libicu66 \
-##[error]  20 | >>>     unzip \
-##[error]  21 | >>>     gettext \
-##[error]  22 | >>>     python3-pip \
-##[error]  23 | >>>     npm \
-##[error]  24 | >>>     python3-setuptools \
-##[error]  25 | >>>     python3-venv
-##[error]  26 |     
-##[error]--------------------
-##[error]ERROR: failed to solve: process "/bin/sh -c apt-get update &&     apt-get upgrade -y &&     apt-get install -y -qq --no-install-recommends     apt-transport-https     apt-utils     ca-certificates     curl     git     iputils-ping     jq     lsb-release     software-properties-common     libicu66     unzip     gettext     python3-pip     npm     python3-setuptools     python3-venv" did not complete successfully: exit code: 100
-##[error]The process '/bin/docker' failed with exit code 1
+pool:
+  name: 'Agente-Kubernetes'
+variables:
+  PROXY_HTTP: http://proxy.mercantil.com.br:3128
+  PROXY_HTTPS: http://proxy.mercantil.com.br:3128
+
+stages:
+  - stage: CI
+    displayName: Continuous Integration
+    jobs:
+    - job: build
+      displayName: Build Docker Image
+      steps:
+      - task: Docker@2
+        displayName: Build an image
+        inputs:
+          containerRegistry: 'Azure.io'
+          repository: 'agent'
+          command: 'build'
+          Dockerfile: '**/Dockerfile'
+          arguments: '--build-arg http_proxy=$(PROXY_HTTP) --build-arg https_proxy=$(PROXY_HTTPS) --progress=plain'
+      - task: Docker@2
+        displayName: Push image to ACR
+        inputs:
+          containerRegistry: 'Azure.io'
+          repository: 'agent'
+          command: 'push'
+          tags: "$(Build.BuildId)"
+          arguments: '--build-arg http_proxy=$(PROXY_HTTP) --build-arg https_proxy=$(PROXY_HTTPS) --progress=plain'
+      - task: ArchiveFiles@2
+        displayName: Archive agent files
+        inputs:
+          rootFolderOrFile: '$(Build.SourcesDirectory)'
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/agent.zip'
+        arguments: '--build-arg http_proxy=$(PROXY_HTTP) --build-arg https_proxy=$(PROXY_HTTPS) --progress=plain'
+      - task: PublishBuildArtifacts@1
+        displayName: 'Publish agent artifact'
+        inputs:
+          artifactName: agent
+          pathToPublish: '$(Build.ArtifactStagingDirectory)/agent.zip'
+        arguments: '--build-arg http_proxy=$(PROXY_HTTP) --build-arg https_proxy=$(PROXY_HTTPS) --progress=plain'
