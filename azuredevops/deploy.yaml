@@ -1,1 +1,3 @@
 kubectl get applications.argoproj.io -n plataforma-m-mais -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{.metadata.finalizers}{"\n\n"}{end}'
+
+kubectl patch applications.argoproj.io <resource-name> -n plataforma-m-mais --type=json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'
