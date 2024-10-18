@@ -42,7 +42,6 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
 
 # Instalação do Docker CLI e configuração do grupo docker
 RUN curl -fsSL https://get.docker.com | bash && \
-    groupadd docker && \
     useradd -m -d /home/agent agent && \
     usermod -aG docker agent && \
     chown -R agent:agent /home/agent
@@ -56,7 +55,7 @@ WORKDIR /azp
 
 # Copia e ajusta o script de inicialização
 COPY ./start.sh .
-RUN chmod +x start.sh
+RUN chmod 777 start.sh
 
 # Troca para o usuário 'agent'
 USER agent
