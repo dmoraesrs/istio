@@ -30,29 +30,41 @@ RUN apt-get upgrade -y && \
     python3-venv && \
     rm -rf /var/lib/apt/lists/*
 
-# Resto da configuração
-
+# Instalação do Helm
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
     chmod +x get_helm.sh && ./get_helm.sh && rm get_helm.sh
 
+# Instalação do Azure CLI
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
+# Instalação do kubectl
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
     mv kubectl /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
+
+# Instalação do Docker CLI e configuração de Docker-in-Docker
+RUN curl -fsSL https://get.docker.com | bash && \
+    usermod -aG docker root
+
+# Copia o certificado e atualiza a CA
+COPY ./CA.cer /usr/local/share/ca-certificates/mb.crt
+RUN update-ca-certificates
 
 # Define o diretório de trabalho
 WORKDIR /azp
 
+# Copia e ajusta o script de inicialização
 COPY ./start.sh .
-COPY ./CA.cer /usr/local/share/ca-certificates/mb.crt
-
-RUN update-ca-certificates 
 RUN chmod +x start.sh
 
-RUN useradd -m -d /home/agent agent
-RUN chown -R agent:agent /azp /home/agent
+# Criação e configuração do usuário 'agent'
+RUN useradd -m -d /home/agent agent && \
+    chown -R agent:agent /azp /home/agent
 
+# Troca para o usuário 'agent'
 USER agent
 
+# Exposição da porta para comunicação Docker (opcional)
+EXPOSE 2375
 
+# Define o ponto de entrada
 ENTRYPOINT [ "./start.sh" ]
