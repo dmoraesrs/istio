@@ -1,1 +1,1 @@
-docker run --rm -it <seu-repositorio>/docker-agent:latest /bin/bash
+./start.sh: line 20: /azp/.token: Permission denied
