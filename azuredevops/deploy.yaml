@@ -18,7 +18,7 @@ metadata:
   labels:
     app: azure-agent-gke-dvx
 spec:
-  replicas: 2  # Mantenha sempre duas réplicas ativas
+  replicas: 2  # Mantenha sempre duas réplicas ativas para alta disponibilidade
   selector:
     matchLabels:
       app: azure-agent-gke-dvx
@@ -46,6 +46,10 @@ spec:
                 secretKeyRef:
                   name: azdevops
                   key: AZP_POOL
+            - name: DOCKER_HOST  # Configuração para Docker-in-Docker
+              value: "unix:///var/run/docker.sock"
+          securityContext:
+            privileged: true  # Necessário para habilitar Docker-in-Docker (DinD)
           volumeMounts:
             - mountPath: /var/run/docker.sock
               name: docker-volume
@@ -53,6 +57,7 @@ spec:
         - name: docker-volume
           hostPath:
             path: /var/run/docker.sock
+            type: Socket  # Define que o volume é do tipo socket
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
