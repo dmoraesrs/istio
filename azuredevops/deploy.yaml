@@ -1,19 +1,2 @@
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: argocd-virtualservice
-  namespace: plataforma-m-mais
-spec:
-  hosts:
-    - "argocd.plataformammais-sandbox.n-mercantil.com.br"  # O mesmo domínio configurado no Gateway
-  gateways:
-    - istio-system/istio-ingressgateway
-  http:
-    - match:
-        - uri:
-            prefix: "/"  # Roteia todo o tráfego para o NGINX
-      route:
-        - destination:
-            host: argocd-server  # O nome do Service do NGINX
-            port:
-              number: 80
+permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.47/containers/json?all=1": dial unix /var/run/docker.sock: connect: permission denied
+agent@az-agent-deployment-787f4bdc55-9jb2s:/azp$ su
