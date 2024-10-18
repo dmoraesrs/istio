@@ -1,5 +1,3 @@
-./start.sh: line 27: /azp/.token: Permission denied
-
 #!/bin/bash
 set -e
 
@@ -24,12 +22,14 @@ if [ -z "$AZP_TOKEN" ]; then
   exit 1
 fi
 
-# Cria o arquivo de token
+# Configuração do diretório e permissões
 AZP_TOKEN_FILE="/azp/.token"
+log "Verificando permissões para /azp..."
+mkdir -p /azp && chmod -R 777 /azp  # Garante que o diretório tenha permissão de escrita
 echo -n "$AZP_TOKEN" > "$AZP_TOKEN_FILE"
 unset AZP_TOKEN
 
-# Cria o diretório de trabalho se necessário
+# Cria o diretório de trabalho, se necessário
 if [ -n "$AZP_WORK" ]; then
   mkdir -p "$AZP_WORK"
 fi
