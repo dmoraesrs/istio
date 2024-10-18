@@ -1,3 +1,5 @@
+./start.sh: line 27: /azp/.token: Permission denied
+
 #!/bin/bash
 set -e
 
