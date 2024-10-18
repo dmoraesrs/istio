@@ -1,2 +1,71 @@
-permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.47/containers/json?all=1": dial unix /var/run/docker.sock: connect: permission denied
-agent@az-agent-deployment-787f4bdc55-9jb2s:/azp$ su
+FROM ubuntu:20.04
+
+# Configurações para evitar prompts interativos
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TARGETARCH="linux-x64"
+
+# Adiciona o repositório 'universe' e atualiza o apt-get
+RUN apt-get update && apt-get install -y software-properties-common && \
+    add-apt-repository universe && \
+    apt-get update
+
+# Instalação de pacotes e ferramentas essenciais
+RUN apt-get upgrade -y && \
+    apt-get install -y -qq --no-install-recommends \
+    apt-transport-https \
+    apt-utils \
+    ca-certificates \
+    curl \
+    git \
+    iputils-ping \
+    jq \
+    lsb-release \
+    software-properties-common \
+    libicu-dev \
+    unzip \
+    gettext \
+    python3-pip \
+    npm \
+    python3-setuptools \
+    python3-venv && \
+    rm -rf /var/lib/apt/lists/*
+
+# Instalação do Helm
+RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
+    chmod +x get_helm.sh && ./get_helm.sh && rm get_helm.sh
+
+# Instalação do Azure CLI
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+# Instalação do kubectl
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    mv kubectl /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
+
+# Instalação do Docker CLI e configuração do usuário para usar Docker
+RUN curl -fsSL https://get.docker.com | bash && \
+    groupadd docker && usermod -aG docker agent
+
+# Copia o certificado e atualiza a CA
+COPY ./CA.cer /usr/local/share/ca-certificates/mb.crt
+RUN update-ca-certificates
+
+# Define o diretório de trabalho
+WORKDIR /azp
+
+# Copia e ajusta o script de inicialização
+COPY ./start.sh .
+RUN chmod +x start.sh
+
+# Criação e configuração do usuário 'agent'
+RUN useradd -m -d /home/agent agent && \
+    usermod -aG docker agent && \
+    chown -R agent:agent /azp /home/agent
+
+# Troca para o usuário 'agent'
+USER agent
+
+# Exposição da porta para comunicação Docker (opcional)
+EXPOSE 2375
+
+# Define o ponto de entrada
+ENTRYPOINT [ "./start.sh" ]
