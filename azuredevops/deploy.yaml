@@ -41,9 +41,8 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
     mv kubectl /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
 
-# Instalação do Docker CLI e configuração do usuário para usar Docker
-RUN curl -fsSL https://get.docker.com | bash && \
-    groupadd docker && usermod -aG docker agent
+# Instalação do Docker CLI
+RUN curl -fsSL https://get.docker.com | bash
 
 # Copia o certificado e atualiza a CA
 COPY ./CA.cer /usr/local/share/ca-certificates/mb.crt
@@ -56,7 +55,7 @@ WORKDIR /azp
 COPY ./start.sh .
 RUN chmod +x start.sh
 
-# Criação e configuração do usuário 'agent'
+# Criação e configuração do usuário 'agent' e adição ao grupo docker
 RUN useradd -m -d /home/agent agent && \
     usermod -aG docker agent && \
     chown -R agent:agent /azp /home/agent
