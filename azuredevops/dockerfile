@@ -1,11 +1,11 @@
 FROM ubuntu:20.04
 
-# Configurações para evitar prompts interativos
+# Configuração de ambiente
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TARGETARCH="linux-x64"
 ENV DOCKER_HOST="unix:///var/run/docker.sock"
 
-# Adiciona repositório 'universe' e atualiza o apt-get
+# Adiciona repositório e atualiza pacotes
 RUN apt-get update && apt-get install -y software-properties-common && \
     add-apt-repository universe && apt-get update
 
@@ -44,7 +44,9 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
 RUN curl -fsSL https://get.docker.com | bash && \
     useradd -m -d /home/agent agent && \
     usermod -aG docker agent && \
-    chown -R agent:agent /home/agent
+    mkdir -p /azp && \
+    chown -R agent:agent /azp /home/agent && \
+    chmod -R 755 /azp
 
 # Copia o certificado e atualiza a CA
 COPY ./CA.cer /usr/local/share/ca-certificates/mb.crt
@@ -54,8 +56,8 @@ RUN update-ca-certificates
 WORKDIR /azp
 
 # Copia e ajusta o script de inicialização
-COPY ./start.sh .
-RUN chmod 777 start.sh
+COPY ./start.sh /azp/start.sh
+RUN chmod +x /azp/start.sh
 
 # Troca para o usuário 'agent'
 USER agent
