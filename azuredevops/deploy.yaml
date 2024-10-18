@@ -1,3 +1,45 @@
-kubectl get applications.argoproj.io -n plataforma-m-mais -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}{.metadata.finalizers}{"\n\n"}{end}'
+FROM ubuntu:20.04
 
-kubectl patch applications.argoproj.io <resource-name> -n plataforma-m-mais --type=json -p='[{"op": "remove", "path": "/metadata/finalizers"}]'
+# Configurações para evitar prompts interativos durante a instalação
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Atualiza os pacotes e instala dependências básicas
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y -qq --no-install-recommends \
+    apt-transport-https \
+    apt-utils \
+    ca-certificates \
+    curl \
+    git \
+    iputils-ping \
+    jq \
+    lsb-release \
+    software-properties-common \
+    libicu66 \
+    unzip \
+    gettext
+
+# Instala o AWS CLI v2
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+    unzip awscliv2.zip && ./aws/install && rm -rf awscliv2.zip aws
+
+# Instala o Helm
+RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
+    chmod +x get_helm.sh && ./get_helm.sh && rm get_helm.sh
+
+# Instala o Azure CLI
+RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+
+# Instala o kubectl
+RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+    cp kubectl /usr/local/bin/ && chmod +x /usr/local/bin/kubectl && rm kubectl
+
+# Instala o Docker
+RUN curl -fsSL http://get.docker.com | bash
+
+# Define a arquitetura de destino como uma variável de ambiente
+ENV TARGETARCH=linux-x64
+
+# Define o diretório de trabalho
+WORKDIR /azp
