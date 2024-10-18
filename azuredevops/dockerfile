@@ -3,16 +3,14 @@ FROM ubuntu:20.04
 # Configurações para evitar prompts interativos
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TARGETARCH="linux-x64"
-ENV DOCKER_HOST="unix:///var/run/docker.sock"  # Configuração do Docker socket
+ENV DOCKER_HOST="unix:///var/run/docker.sock"
 
-# Adiciona o repositório 'universe' e atualiza o apt-get
+# Adiciona repositório 'universe' e atualiza o apt-get
 RUN apt-get update && apt-get install -y software-properties-common && \
-    add-apt-repository universe && \
-    apt-get update
+    add-apt-repository universe && apt-get update
 
 # Instalação de pacotes essenciais
-RUN apt-get upgrade -y && \
-    apt-get install -y -qq --no-install-recommends \
+RUN apt-get upgrade -y && apt-get install -y -qq --no-install-recommends \
     apt-transport-https \
     apt-utils \
     ca-certificates \
@@ -44,7 +42,7 @@ RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/s
 
 # Instalação do Docker CLI e configuração do grupo docker
 RUN curl -fsSL https://get.docker.com | bash && \
-    groupadd -f docker && \
+    groupadd docker && \
     useradd -m -d /home/agent agent && \
     usermod -aG docker agent && \
     chown -R agent:agent /home/agent
@@ -67,4 +65,4 @@ USER agent
 EXPOSE 2375
 
 # Define o ponto de entrada
-ENTRYPOINT [ "./start.sh" ]
+ENTRYPOINT ["./start.sh"]
