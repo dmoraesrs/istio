@@ -9,6 +9,7 @@ data:
   AZP_URL: aHR0cHM6Ly9kZXZvcHMubWVyY2FudGlsLmNvbS5ici9UZWNub2xvZ2lhX01CCg==
   AZP_TOKEN: ZzI3YXg2ZG41aHhxbDRvM3JlNTV5eHM3NGVocnB0bHJhdXFoNTZiaTR1N2F6dXZvendwcQo=
   AZP_POOL: YWdlbnQtZHZ4LWdrZQo=
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -18,7 +19,7 @@ metadata:
   labels:
     app: azure-agent-gke-dvx
 spec:
-  replicas: 2  # Mantenha sempre duas réplicas ativas para alta disponibilidade
+  replicas: 2  # Duas réplicas para alta disponibilidade
   selector:
     matchLabels:
       app: azure-agent-gke-dvx
@@ -29,7 +30,7 @@ spec:
     spec:
       containers:
         - name: kubepodcreation
-          image: imagensmbprd.azurecr.io/agent:189249
+          image: imagensmbprd.azurecr.io/agent:189249  # Atualizar com a imagem correta
           env:
             - name: AZP_URL
               valueFrom:
@@ -49,7 +50,7 @@ spec:
             - name: DOCKER_HOST  # Configuração para Docker-in-Docker
               value: "unix:///var/run/docker.sock"
           securityContext:
-            privileged: true  # Necessário para habilitar Docker-in-Docker (DinD)
+            privileged: true  # Necessário para Docker-in-Docker
           volumeMounts:
             - mountPath: /var/run/docker.sock
               name: docker-volume
@@ -57,7 +58,7 @@ spec:
         - name: docker-volume
           hostPath:
             path: /var/run/docker.sock
-            type: Socket  # Define que o volume é do tipo socket
+            type: Socket  # Volume do tipo socket para Docker
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -68,4 +69,4 @@ spec:
                     values:
                       - apps
       imagePullSecrets:
-        - name: docker-credentials
+        - name: docker-credentials  # Secret para autenticação de imagem
