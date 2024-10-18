@@ -1,11 +1,16 @@
 FROM ubuntu:20.04
 
-# Configurações para evitar prompts interativos durante a instalação
+# Configurações para evitar prompts interativos
 ENV DEBIAN_FRONTEND=noninteractive
+ENV TARGETARCH="linux-x64"
 
-# Atualiza os pacotes e instala dependências básicas
-RUN apt-get update && \
-    apt-get upgrade -y && \
+# Adiciona o repositório 'universe' e atualiza o apt-get
+RUN apt-get update && apt-get install -y software-properties-common && \
+    add-apt-repository universe && \
+    apt-get update
+
+# Instalação de pacotes e ferramentas essenciais
+RUN apt-get upgrade -y && \
     apt-get install -y -qq --no-install-recommends \
     apt-transport-https \
     apt-utils \
@@ -16,30 +21,38 @@ RUN apt-get update && \
     jq \
     lsb-release \
     software-properties-common \
-    libicu66 \
+    libicu-dev \
     unzip \
-    gettext
+    gettext \
+    python3-pip \
+    npm \
+    python3-setuptools \
+    python3-venv && \
+    rm -rf /var/lib/apt/lists/*
 
-# Instala o AWS CLI v2
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-    unzip awscliv2.zip && ./aws/install && rm -rf awscliv2.zip aws
+# Resto da configuração
 
-# Instala o Helm
 RUN curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 && \
     chmod +x get_helm.sh && ./get_helm.sh && rm get_helm.sh
 
-# Instala o Azure CLI
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
-# Instala o kubectl
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
-    cp kubectl /usr/local/bin/ && chmod +x /usr/local/bin/kubectl && rm kubectl
-
-# Instala o Docker
-RUN curl -fsSL http://get.docker.com | bash
-
-# Define a arquitetura de destino como uma variável de ambiente
-ENV TARGETARCH=linux-x64
+    mv kubectl /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
 
 # Define o diretório de trabalho
 WORKDIR /azp
+
+COPY ./start.sh .
+COPY ./CA.cer /usr/local/share/ca-certificates/mb.crt
+
+RUN update-ca-certificates 
+RUN chmod +x start.sh
+
+RUN useradd -m -d /home/agent agent
+RUN chown -R agent:agent /azp /home/agent
+
+USER agent
+
+
+ENTRYPOINT [ "./start.sh" ]
