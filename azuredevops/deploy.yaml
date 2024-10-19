@@ -54,6 +54,7 @@ spec:
           volumeMounts:
             - mountPath: /var/run/docker.sock
               name: docker-volume
+              readOnly: false
       volumes:
         - name: docker-volume
           hostPath:
