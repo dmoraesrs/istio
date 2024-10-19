@@ -20,6 +20,7 @@ RUN apt-get upgrade -y && apt-get install -y -qq --no-install-recommends \
     jq \
     lsb-release \
     software-properties-common \
+    sudo \
     libicu-dev \
     unzip \
     gettext \
@@ -40,11 +41,16 @@ RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
     mv kubectl /usr/local/bin/kubectl && chmod +x /usr/local/bin/kubectl
 
-# Instalação do Docker CLI e configuração do grupo docker
-RUN curl -fsSL https://get.docker.com | bash && \
-    useradd -m -d /home/agent agent && \
-    usermod -aG docker agent && \
-    mkdir -p /azp && \
+# Instalação do Docker CLI
+RUN curl -fsSL https://get.docker.com | bash
+
+# Criação do usuário 'agent' e configuração de sudo sem senha
+RUN useradd -m -d /home/agent -s /bin/bash agent && \
+    usermod -aG docker,sudo agent && \
+    echo "agent ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Criação do diretório de trabalho e configuração de permissões
+RUN mkdir -p /azp && \
     chown -R agent:agent /azp /home/agent && \
     chmod -R 755 /azp
 
