@@ -50,7 +50,7 @@ spec:
             - name: DOCKER_HOST
               value: "unix:///var/run/docker.sock"
           securityContext:
-            privileged: true
+            privileged: true  # Necessário para acesso ao Docker
           volumeMounts:
             - mountPath: /var/run/docker.sock
               name: docker-volume
