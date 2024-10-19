@@ -48,9 +48,6 @@ RUN curl -fsSL https://get.docker.com | bash && \
     chown -R agent:agent /azp /home/agent && \
     chmod -R 755 /azp
 
-# Define permissões para o socket Docker
-RUN chmod 666 /var/run/docker.sock
-
 # Copia o certificado e atualiza a CA
 COPY ./CA.cer /usr/local/share/ca-certificates/mb.crt
 RUN update-ca-certificates
