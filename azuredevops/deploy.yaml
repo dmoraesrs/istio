@@ -19,7 +19,7 @@ metadata:
   labels:
     app: azure-agent-gke-dvx
 spec:
-  replicas: 2  # Duas réplicas para alta disponibilidade
+  replicas: 2
   selector:
     matchLabels:
       app: azure-agent-gke-dvx
@@ -30,7 +30,7 @@ spec:
     spec:
       containers:
         - name: kubepodcreation
-          image: imagensmbprd.azurecr.io/agent:189249
+          image: imagensmbprd.azurecr.io/agent:189496
           env:
             - name: AZP_URL
               valueFrom:
@@ -47,30 +47,18 @@ spec:
                 secretKeyRef:
                   name: az-agent
                   key: AZP_POOL
-            - name: DOCKER_HOST  # Configuração para Docker-in-Docker
+            - name: DOCKER_HOST
               value: "unix:///var/run/docker.sock"
           securityContext:
-            privileged: true  # Necessário para Docker-in-Docker
+            privileged: true
           volumeMounts:
             - mountPath: /var/run/docker.sock
               name: docker-volume
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 10
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 10
-            periodSeconds: 15
       volumes:
         - name: docker-volume
           hostPath:
             path: /var/run/docker.sock
-            type: Socket  # Volume do tipo socket para Docker
+            type: Socket
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -80,6 +68,6 @@ spec:
                     operator: In
                     values:
                       - apps
-      restartPolicy: Always  # Reinicia os pods automaticamente em caso de falha
+      restartPolicy: Always
       imagePullSecrets:
-        - name: docker-credentials  # Secret para autenticação no repositório
+        - name: docker-credentials
