@@ -1,134 +1,120 @@
-diego_moraes@cloudshell:~ (prj-plataforma-m-mais-snbx)$ kubectl logs kiali-7c9bf5bfff-hcrf2 -n istio-system
-2024/10/21 12:56:43 maxprocs: Leaving GOMAXPROCS=2: CPU quota undefined
-2024-10-21T12:56:43Z INF Kiali: Version: v1.87.0, Commit: 19de0d1c296b71440365b69ed31cdf7cd7ecd224, Go: 1.22.4
-2024-10-21T12:56:43Z INF Using authentication strategy [anonymous]
-2024-10-21T12:56:43Z WRN Kiali auth strategy is configured for anonymous access - users will not be authenticated.
-2024-10-21T12:56:43Z INF Some validation errors will be ignored [KIA1301]. If these errors do occur, they will still be logged. If you think the validation errors you see are incorrect, please report them to the Kiali team if you have not done so already and provide the details of your scenario. This will keep Kiali validations strong for the whole community.
-2024-10-21T12:56:43Z INF Initializing Kiali Cache
-2024-10-21T12:56:43Z INF [Kiali Cache] Waiting for cluster-scoped cache to sync
-W1021 12:56:43.598839       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-E1021 12:56:43.598991       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Telemetry: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-W1021 12:56:43.601551       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-E1021 12:56:43.602018       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.VirtualService: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-W1021 12:56:43.666287       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-E1021 12:56:43.666354       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Sidecar: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-W1021 12:56:43.667055       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-E1021 12:56:43.667352       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.PeerAuthentication: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-W1021 12:56:43.667935       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-E1021 12:56:43.667986       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadEntry: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-W1021 12:56:43.668505       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-E1021 12:56:43.668542       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Gateway: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-W1021 12:56:43.668767       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-E1021 12:56:43.668990       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.DestinationRule: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-W1021 12:56:43.670001       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-E1021 12:56:43.670039       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.ServiceEntry: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-W1021 12:56:43.671239       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-E1021 12:56:43.671315       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadGroup: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-W1021 12:56:44.500465       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-E1021 12:56:44.500522       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Sidecar: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-W1021 12:56:44.666531       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-E1021 12:56:44.666719       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.DestinationRule: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-W1021 12:56:44.783949       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-E1021 12:56:44.784063       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Telemetry: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-W1021 12:56:44.863828       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-E1021 12:56:44.864004       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.PeerAuthentication: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-W1021 12:56:45.072578       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-E1021 12:56:45.072643       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Gateway: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-W1021 12:56:45.076385       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-E1021 12:56:45.076434       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadGroup: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-W1021 12:56:45.120879       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-E1021 12:56:45.120955       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.VirtualService: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-W1021 12:56:45.195679       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-E1021 12:56:45.195734       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadEntry: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-W1021 12:56:45.262238       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-E1021 12:56:45.262320       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.ServiceEntry: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-W1021 12:56:46.899816       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-E1021 12:56:46.899871       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadGroup: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-W1021 12:56:47.050059       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-E1021 12:56:47.050119       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Gateway: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-W1021 12:56:47.484914       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-E1021 12:56:47.484970       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.DestinationRule: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-W1021 12:56:47.515530       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-E1021 12:56:47.515580       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Sidecar: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-W1021 12:56:47.635816       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-E1021 12:56:47.635905       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.VirtualService: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-W1021 12:56:47.664931       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-E1021 12:56:47.665129       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadEntry: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-W1021 12:56:47.762799       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-E1021 12:56:47.762860       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Telemetry: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-W1021 12:56:47.875168       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-E1021 12:56:47.875223       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.ServiceEntry: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-W1021 12:56:48.047820       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-E1021 12:56:48.047898       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.PeerAuthentication: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-W1021 12:56:50.635217       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-E1021 12:56:50.635428       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Gateway: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-W1021 12:56:50.759593       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-E1021 12:56:50.759725       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadGroup: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-W1021 12:56:52.456503       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-E1021 12:56:52.456559       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Sidecar: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-W1021 12:56:52.750503       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-E1021 12:56:52.750578       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.PeerAuthentication: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-W1021 12:56:52.913112       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-E1021 12:56:52.913181       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.ServiceEntry: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-W1021 12:56:53.032062       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-E1021 12:56:53.032111       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.DestinationRule: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-W1021 12:56:53.349602       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-E1021 12:56:53.349754       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Telemetry: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-W1021 12:56:53.948143       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-E1021 12:56:53.948208       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadEntry: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-W1021 12:56:54.030219       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-E1021 12:56:54.030305       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.VirtualService: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-W1021 12:57:00.565148       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-E1021 12:57:00.565202       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Gateway: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-W1021 12:57:01.606156       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-E1021 12:57:01.606235       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.ServiceEntry: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-W1021 12:57:01.652525       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-E1021 12:57:01.652575       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.DestinationRule: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-W1021 12:57:01.833540       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-E1021 12:57:01.833593       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.PeerAuthentication: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-W1021 12:57:02.210742       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-E1021 12:57:02.210825       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadGroup: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-W1021 12:57:03.320371       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-E1021 12:57:03.320426       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.VirtualService: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-W1021 12:57:03.974500       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-E1021 12:57:03.974554       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Sidecar: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-W1021 12:57:04.481898       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-E1021 12:57:04.481953       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadEntry: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-W1021 12:57:06.071356       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-E1021 12:57:06.071419       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Telemetry: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-W1021 12:57:19.272606       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-E1021 12:57:19.272663       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Sidecar: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-W1021 12:57:19.576816       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-E1021 12:57:19.576874       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Gateway: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-W1021 12:57:21.398135       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-E1021 12:57:21.398184       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadEntry: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-W1021 12:57:22.073982       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-E1021 12:57:22.074049       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadGroup: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-W1021 12:57:23.048908       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-E1021 12:57:23.048984       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.DestinationRule: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-W1021 12:57:23.415335       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-E1021 12:57:23.415390       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.ServiceEntry: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-W1021 12:57:24.896381       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-E1021 12:57:24.896561       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Telemetry: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-W1021 12:57:25.255993       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-E1021 12:57:25.256048       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.VirtualService: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-W1021 12:57:25.594508       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-E1021 12:57:25.594550       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.PeerAuthentication: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-W1021 12:57:50.300492       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-E1021 12:57:50.300548       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.DestinationRule: failed to list *v1.DestinationRule: the server could not find the requested resource (get destinationrules.networking.istio.io)
-W1021 12:57:54.877535       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-E1021 12:57:54.877590       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.VirtualService: failed to list *v1.VirtualService: the server could not find the requested resource (get virtualservices.networking.istio.io)
-W1021 12:57:56.651170       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-E1021 12:57:56.651241       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.ServiceEntry: failed to list *v1.ServiceEntry: the server could not find the requested resource (get serviceentries.networking.istio.io)
-W1021 12:57:57.576456       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-E1021 12:57:57.576512       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.PeerAuthentication: failed to list *v1.PeerAuthentication: the server could not find the requested resource (get peerauthentications.security.istio.io)
-W1021 12:57:59.716544       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-E1021 12:57:59.716601       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Telemetry: failed to list *v1.Telemetry: the server could not find the requested resource (get telemetries.telemetry.istio.io)
-W1021 12:58:02.154605       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-E1021 12:58:02.154659       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Gateway: failed to list *v1.Gateway: the server could not find the requested resource (get gateways.networking.istio.io)
-W1021 12:58:02.890772       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-E1021 12:58:02.891010       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadGroup: failed to list *v1.WorkloadGroup: the server could not find the requested resource (get workloadgroups.networking.istio.io)
-W1021 12:58:04.348112       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-E1021 12:58:04.348171       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.WorkloadEntry: failed to list *v1.WorkloadEntry: the server could not find the requested resource (get workloadentries.networking.istio.io)
-W1021 12:58:07.803494       1 reflector.go:547] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
-E1021 12:58:07.803562       1 reflector.go:150] pkg/mod/k8s.io/client-go@v0.30.0/tools/cache/reflector.go:232: Failed to watch *v1.Sidecar: failed to list *v1.Sidecar: the server could not find the requested resource (get sidecars.networking.istio.io)
+apiVersion: v1
+data:
+  config.yaml: |
+    additional_display_details:
+    - annotation: kiali.io/api-spec
+      icon_annotation: kiali.io/api-type
+      title: API Documentation
+    auth:
+      openid: {}
+      openshift:
+        client_id_prefix: kiali
+      strategy: anonymous
+    clustering:
+      autodetect_secrets:
+        enabled: true
+        label: kiali.io/multiCluster=true
+      clusters: []
+    deployment:
+      accessible_namespaces:
+      - '**'
+      additional_service_yaml: {}
+      affinity:
+        node: {}
+        pod: {}
+        pod_anti: {}
+      configmap_annotations: {}
+      custom_secrets: []
+      dns:
+        config: {}
+        policy: ""
+      host_aliases: []
+      hpa:
+        api_version: autoscaling/v2
+        spec: {}
+      image_digest: ""
+      image_name: quay.io/kiali/kiali
+      image_pull_policy: IfNotPresent
+      image_pull_secrets: []
+      image_version: v1.87
+      ingress:
+        additional_labels: {}
+        class_name: nginx
+        override_yaml:
+          metadata: {}
+      ingress_enabled: false
+      instance_name: kiali
+      logger:
+        log_format: text
+        log_level: info
+        sampler_rate: "1"
+        time_field_format: 2006-01-02T15:04:05Z07:00
+      namespace: istio-system
+      node_selector: {}
+      pod_annotations: {}
+      pod_labels:
+        sidecar.istio.io/inject: "false"
+      priority_class_name: ""
+      replicas: 1
+      resources:
+        limits:
+          memory: 1Gi
+        requests:
+          cpu: 10m
+          memory: 64Mi
+      secret_name: kiali
+      security_context: {}
+      service_annotations: {}
+      service_type: ""
+      tolerations: []
+      version_label: v1.87.0
+      view_only_mode: false
+    external_services:
+      custom_dashboards:
+        enabled: true
+      istio:
+        root_namespace: istio-system
+      tracing:
+        enabled: false
+    identity:
+      cert_file: ""
+      private_key_file: ""
+    istio_namespace: istio-system
+    kiali_feature_flags:
+      certificates_information_indicators:
+        enabled: true
+        secrets:
+        - cacerts
+        - istio-ca-secret
+      disabled_features: []
+      validations:
+        ignore:
+        - KIA1301
+    login_token:
+      signing_key: CHANGEME00000000
+    server:
+      observability:
+        metrics:
+          enabled: true
+          port: 9090
+      port: 20001
+      web_root: /kiali
+kind: ConfigMap
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","data":{"config.yaml":"additional_display_details:\n- annotation: kiali.io/api-spec\n  icon_annotation: kiali.io/api-type\n  title: API Documentation\nauth:\n  openid: {}\n  openshift:\n    client_id_prefix: kiali\n  strategy: anonymous\nclustering:\n  autodetect_secrets:\n    enabled: true\n    label: kiali.io/multiCluster=true\n  clusters: []\ndeployment:\n  accessible_namespaces:\n  - '**'\n  additional_service_yaml: {}\n  affinity:\n    noden    pod: {}\n    pod_anti: {}\n  configmap_annotations: {}\n  custom_secrets: []\n  dns:\n    config: {}\n    policy: \"\"\n  host_aliases: []\n  hpa:\n    api_version: autoscaling/v2\n    spec: {}\n  image_digest: \"\"\n  image_name: quay.io/kiali/kiali\n  image_pull_policy: IfNotPresent\n  image_pull_secrets: []\n  image_version: v1.87\n  ingress:\n    additional_labels: {}\n    class_name: nginx\n    override_yaml:\n      metadata: {}\n  ingress_enabled: false\n  instance_name: kiali\n  logger:\n    log_format: text\n    log_level: info\n    sampler_rate: \"1\"\n    time_field_format: 2006-01-02T15:04:05Z07:00\n  namespace: istio-system\n  node_selector: {}\n  pod_annotations: {}\n  pod_labels:\n    sidecar.istio.io/inject: \"false\"\n  priority_class_name: \"\"\n  replicas: 1\n  resources:\n    limits:\n      memory: 1Gi\n    requests:\n      cpu: 10m\n      memory: 64Mi\n  secret_name: kiali\n  security_context: {}\n  service_annotations: {}\n  service_type: \"\"\n  tolerations: []\n  version_label: v1.87.0\n  view_only_mode: false\nexternal_services:\n  custom_dashboards:\n    enabled: true\n  istio:\n    root_namespace: istio-system\n  tracing:\n    enabled: false\nidentity:\n  cert_file: \"\"\n  private_key_file: \"\"\nistio_namespace: istio-system\nkiali_feature_flags:\n  certificates_information_indicators:\n    enabled: true\n    secrets:\n    - cacerts\n    - istio-ca-secret\n  disabled_features: []\n  validations:\n    ignore:\n    - KIA1301\nlogin_token:\n  signing_key: CHANGEME00000000\nserver:\n  observability:\n    metrics:\n      enabled: true\n      port: 9090\n  port: 20001\n  web_root: /kiali\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app":"kiali","app.kubernetes.io/instance":"istio","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"kiali","app.kubernetes.io/part-of":"kiali","app.kubernetes.io/version":"v1.87.0","helm.sh/chart":"kiali-server-1.87.0","version":"v1.87.0"},"name":"kiali","namespace":"istio-system"}}
+  creationTimestamp: "2024-10-18T20:11:40Z"
+  labels:
+    app: kiali
+    app.kubernetes.io/instance: istio
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kiali
+    app.kubernetes.io/part-of: kiali
+    app.kubernetes.io/version: v1.87.0
+    helm.sh/chart: kiali-server-1.87.0
+    version: v1.87.0
+  name: kiali
+  namespace: istio-system
+  resourceVersion: "4644503"
+  uid: d11de76c-235f-4c73-823f-dbc7d818557e
