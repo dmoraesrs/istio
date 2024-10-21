@@ -1,0 +1,15 @@
+authorizationpolicies.security.istio.io                2024-10-15T16:04:48Z
+destinationrules.networking.istio.io                   2024-10-15T16:04:48Z
+envoyfilters.networking.istio.io                       2024-10-15T16:04:48Z
+gateways.networking.istio.io                           2024-10-15T16:04:48Z
+istiooperators.install.istio.io                        2024-10-15T12:58:29Z
+peerauthentications.security.istio.io                  2024-10-15T16:04:48Z
+proxyconfigs.networking.istio.io                       2024-10-15T16:04:48Z
+requestauthentications.security.istio.io               2024-10-15T16:04:48Z
+serviceentries.networking.istio.io                     2024-10-15T16:04:48Z
+sidecars.networking.istio.io                           2024-10-15T16:04:49Z
+telemetries.telemetry.istio.io                         2024-10-15T16:04:49Z
+virtualservices.networking.istio.io                    2024-10-15T16:04:49Z
+wasmplugins.extensions.istio.io                        2024-10-15T16:04:49Z
+workloadentries.networking.istio.io                    2024-10-15T16:04:50Z
+workloadgroups.networking.istio.io                     2024-10-15T16:04:50Z
