@@ -1,109 +1,9 @@
-apiVersion: v1
-data:
-  config.yaml: |
-    additional_display_details:
-    - annotation: kiali.io/api-spec
-      icon_annotation: kiali.io/api-type
-      title: API Documentation
-    auth:
-      openid: {}
-      openshift:
-        client_id_prefix: kiali
-      strategy: anonymous
-    clustering:
-      autodetect_secrets:
-        enabled: true
-        label: kiali.io/multiCluster=true
-      clusters: []
-    deployment:
-      accessible_namespaces:
-      - '**'
-      additional_service_yaml: {}
-      affinity:
-        node: {}
-        pod: {}
-        pod_anti: {}
-      configmap_annotations: {}
-      custom_secrets: []
-      dns:
-        config: {}
-        policy: ""
-      host_aliases: []
-      hpa:
-        api_version: autoscaling/v2
-        spec: {}
-      image_digest: ""
-      image_name: quay.io/kiali/kiali
-      image_pull_policy: IfNotPresent
-      image_pull_secrets: []
-      image_version: v1.87
-      ingress:
-        additional_labels: {}
-        class_name: nginx
-        override_yaml:
-          metadata: {}
-      ingress_enabled: false
-      instance_name: kiali
-      logger:
-        log_format: text
-        log_level: info
-        sampler_rate: "1"
-        time_field_format: 2006-01-02T15:04:05Z07:00
-      namespace: istio-system
-      node_selector: {}
-      pod_annotations: {}
-      pod_labels:
-        sidecar.istio.io/inject: "false"
-      priority_class_name: ""
-      replicas: 1
-      resources:
-        limits:
-          memory: 1Gi
-        requests:
-          cpu: 10m
-          memory: 64Mi
-      secret_name: kiali
-      security_context: {}
-      service_annotations: {}
-      service_type: ""
-      tolerations: []
-      version_label: v1.87.0
-      view_only_mode: false
-    external_services:
-      custom_dashboards:
-        enabled: true
-      istio:
-        root_namespace: istio-system
-      tracing:
-        enabled: false
-    identity:
-      cert_file: ""
-      private_key_file: ""
-    istio_namespace: istio-system
-    kiali_feature_flags:
-      certificates_information_indicators:
-        enabled: true
-        secrets:
-        - cacerts
-        - istio-ca-secret
-      disabled_features: []
-      validations:
-        ignore:
-        - KIA1301
-    login_token:
-      signing_key: CHANGEME00000000
-    server:
-      observability:
-        metrics:
-          enabled: true
-          port: 9090
-      port: 20001
-      web_root: /kiali
-kind: ConfigMap
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
 metadata:
   annotations:
     kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"v1","data":{"config.yaml":"additional_display_details:\n- annotation: kiali.io/api-spec\n  icon_annotation: kiali.io/api-type\n  title: API Documentation\nauth:\n  openid: {}\n  openshift:\n    client_id_prefix: kiali\n  strategy: anonymous\nclustering:\n  autodetect_secrets:\n    enabled: true\n    label: kiali.io/multiCluster=true\n  clusters: []\ndeployment:\n  accessible_namespaces:\n  - '**'\n  additional_service_yaml: {}\n  affinity:\n    noden    pod: {}\n    pod_anti: {}\n  configmap_annotations: {}\n  custom_secrets: []\n  dns:\n    config: {}\n    policy: \"\"\n  host_aliases: []\n  hpa:\n    api_version: autoscaling/v2\n    spec: {}\n  image_digest: \"\"\n  image_name: quay.io/kiali/kiali\n  image_pull_policy: IfNotPresent\n  image_pull_secrets: []\n  image_version: v1.87\n  ingress:\n    additional_labels: {}\n    class_name: nginx\n    override_yaml:\n      metadata: {}\n  ingress_enabled: false\n  instance_name: kiali\n  logger:\n    log_format: text\n    log_level: info\n    sampler_rate: \"1\"\n    time_field_format: 2006-01-02T15:04:05Z07:00\n  namespace: istio-system\n  node_selector: {}\n  pod_annotations: {}\n  pod_labels:\n    sidecar.istio.io/inject: \"false\"\n  priority_class_name: \"\"\n  replicas: 1\n  resources:\n    limits:\n      memory: 1Gi\n    requests:\n      cpu: 10m\n      memory: 64Mi\n  secret_name: kiali\n  security_context: {}\n  service_annotations: {}\n  service_type: \"\"\n  tolerations: []\n  version_label: v1.87.0\n  view_only_mode: false\nexternal_services:\n  custom_dashboards:\n    enabled: true\n  istio:\n    root_namespace: istio-system\n  tracing:\n    enabled: false\nidentity:\n  cert_file: \"\"\n  private_key_file: \"\"\nistio_namespace: istio-system\nkiali_feature_flags:\n  certificates_information_indicators:\n    enabled: true\n    secrets:\n    - cacerts\n    - istio-ca-secret\n  disabled_features: []\n  validations:\n    ignore:\n    - KIA1301\nlogin_token:\n  signing_key: CHANGEME00000000\nserver:\n  observability:\n    metrics:\n      enabled: true\n      port: 9090\n  port: 20001\n  web_root: /kiali\n"},"kind":"ConfigMap","metadata":{"annotations":{},"labels":{"app":"kiali","app.kubernetes.io/instance":"istio","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"kiali","app.kubernetes.io/part-of":"kiali","app.kubernetes.io/version":"v1.87.0","helm.sh/chart":"kiali-server-1.87.0","version":"v1.87.0"},"name":"kiali","namespace":"istio-system"}}
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"ClusterRoleBinding","metadata":{"annotations":{},"labels":{"app":"kiali","app.kubernetes.io/instance":"istio","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"kiali","app.kubernetes.io/part-of":"kiali","app.kubernetes.io/version":"v1.87.0","helm.sh/chart":"kiali-server-1.87.0","version":"v1.87.0"},"name":"kiali"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"ClusterRole","name":"kiali"},"subjects":[{"kind":"ServiceAccount","name":"kiali","namespace":"istio-system"}]}
   creationTimestamp: "2024-10-18T20:11:40Z"
   labels:
     app: kiali
@@ -115,6 +15,9 @@ metadata:
     helm.sh/chart: kiali-server-1.87.0
     version: v1.87.0
   name: kiali
-  namespace: istio-system
-  resourceVersion: "4644503"
-  uid: d11de76c-235f-4c73-823f-dbc7d818557e
+  resourceVersion: "4644516"
+  uid: 9c527c2c-05e3-436f-abbf-28dc40020fdb
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: kiali
