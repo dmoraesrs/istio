@@ -1,86 +1,26 @@
----
-# Criação do Namespace com label para Istio Sidecar Injection
-apiVersion: v1
-kind: Namespace
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
-  name: monitoring
-  labels:
-    istio-injection: enabled  # Label para que o Istio injete o sidecar
----
-# Values para o Prometheus via Helm
-prometheus:
-  enabled: true
-  namespace: monitoring
-  service:
-    type: ClusterIP
-    port: 9090
-  ingress:
-    enabled: true
-    hosts:
-      - istio-prometheus.plataformammais-sandbox.n-mercantil.com.br
-    gateway: istio-system/istio-ingressgateway
-  server:
-    global:
-      scrape_interval: 15s
-    persistentVolume:
-      enabled: true
-      size: 50Gi
----
-# Values para o Grafana via Helm
-grafana:
-  enabled: true
-  namespace: monitoring
-  service:
-    type: ClusterIP
-    port: 3000
-  ingress:
-    enabled: true
-    hosts:
-      - istio-grafana.plataformammais-sandbox.n-mercantil.com.br
-    gateway: istio-system/istio-ingressgateway
-  adminPassword: admin
-  datasources:
-    datasources.yaml:
-      apiVersion: 1
-      datasources:
-        - name: Prometheus
-          type: prometheus
-          url: http://prometheus.monitoring.svc.cluster.local:9090
-          access: proxy
-          isDefault: true
----
-# Criação do Ingress para Prometheus
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: prometheus
-  namespace: monitoring
+  name: observabilidade
+  namespace: plataforma-m-mais
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
-  hosts:
-    - istio-prometheus.plataformammais-sandbox.n-mercantil.com.br
-  gateways:
-    - istio-system/istio-ingressgateway
-  http:
-    - route:
-        - destination:
-            host: prometheus-server
-            port:
-              number: 9090
----
-# Criação do Ingress para Grafana
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: grafana
-  namespace: monitoring
-spec:
-  hosts:
-    - istio-grafana.plataformammais-sandbox.n-mercantil.com.br
-  gateways:
-    - istio-system/istio-ingressgateway
-  http:
-    - route:
-        - destination:
-            host: grafana
-            port:
-              number: 3000
+  project: default
+  source:
+    repoURL: https://devops.mercantil.com.br/Tecnologia_MB/MB/_git/MB.DVX.AppOfApps.PlataformaM_Mais
+    path: sistemas/plataforma-m-mais/manifestos/observabilidade
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - namespace.yaml
+        - values-sandbox.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: observabilidade
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+  namespaceResource:
+    createNamespace: true
