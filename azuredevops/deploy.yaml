@@ -1,3 +1,4 @@
+# Configuração do Prometheus
 prometheus:
   enabled: true
   service:
@@ -14,7 +15,10 @@ prometheus:
     persistentVolume:
       enabled: true
       size: 50Gi
+  nodeSelector:
+    layer: apps  # Afinidade para o NodePool com a label "layer=apps"
 
+# Configuração do Grafana
 grafana:
   enabled: true
   service:
@@ -25,7 +29,7 @@ grafana:
     hosts:
       - istio-grafana.plataformammais-sandbox.n-mercantil.com.br
     gateway: istio-system/istio-ingressgateway
-  adminPassword: admin
+  adminPassword: admin  # Alterar senha para produção
   datasources:
     datasources.yaml:
       apiVersion: 1
@@ -40,7 +44,10 @@ grafana:
           url: http://loki:3100
           access: proxy
           isDefault: false
+  nodeSelector:
+    layer: apps  # Afinidade para o NodePool com a label "layer=apps"
 
+# Configuração do Loki
 loki:
   enabled: true
   persistence:
@@ -54,7 +61,10 @@ loki:
     hosts:
       - istio-loki.plataformammais-sandbox.n-mercantil.com.br
     gateway: istio-system/istio-ingressgateway
+  nodeSelector:
+    layer: apps  # Afinidade para o NodePool com a label "layer=apps"
 
+# Configuração do Alertmanager
 alertmanager:
   enabled: true
   service:
@@ -65,4 +75,12 @@ alertmanager:
     hosts:
       - istio-alertmanager.plataformammais-sandbox.n-mercantil.com.br
     gateway: istio-system/istio-ingressgateway
+  nodeSelector:
+    layer: apps  # Afinidade para o NodePool com a label "layer=apps"
 
+# Configuração do Istio Gateway e Serviços
+istio:
+  enabled: true
+  gateways:
+    istio-ingressgateway:
+      enabled: true
