@@ -1,6 +1,16 @@
-# Configuração do Prometheus
+---
+# Criação do Namespace com label para Istio Sidecar Injection
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: monitoring
+  labels:
+    istio-injection: enabled  # Label para que o Istio injete o sidecar
+---
+# Values para o Prometheus via Helm
 prometheus:
   enabled: true
+  namespace: monitoring
   service:
     type: ClusterIP
     port: 9090
@@ -15,10 +25,11 @@ prometheus:
     persistentVolume:
       enabled: true
       size: 50Gi
-
-# Configuração do Grafana
+---
+# Values para o Grafana via Helm
 grafana:
   enabled: true
+  namespace: monitoring
   service:
     type: ClusterIP
     port: 3000
@@ -34,6 +45,42 @@ grafana:
       datasources:
         - name: Prometheus
           type: prometheus
-          url: http://prometheus.istio-system.svc.cluster.local:9090
+          url: http://prometheus.monitoring.svc.cluster.local:9090
           access: proxy
           isDefault: true
+---
+# Criação do Ingress para Prometheus
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  hosts:
+    - istio-prometheus.plataformammais-sandbox.n-mercantil.com.br
+  gateways:
+    - istio-system/istio-ingressgateway
+  http:
+    - route:
+        - destination:
+            host: prometheus-server
+            port:
+              number: 9090
+---
+# Criação do Ingress para Grafana
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  hosts:
+    - istio-grafana.plataformammais-sandbox.n-mercantil.com.br
+  gateways:
+    - istio-system/istio-ingressgateway
+  http:
+    - route:
+        - destination:
+            host: grafana
+            port:
+              number: 3000
