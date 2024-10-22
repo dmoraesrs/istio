@@ -1,19 +1,39 @@
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: kiali-virtualservice
-  namespace: istio-system
-spec:
-  hosts:
-    - istio-kiali.plataformammais-sandbox.n-mercantil.com.br
-  gateways:
-    - istio-system/istio-ingressgateway
-  http:
-    - match:
-        - uri:
-            prefix: "/"
-      route:
-        - destination:
-            host: kiali-service
-            port:
-              number: 20001
+# Configuração do Prometheus
+prometheus:
+  enabled: true
+  service:
+    type: ClusterIP
+    port: 9090
+  ingress:
+    enabled: true
+    hosts:
+      - istio-prometheus.plataformammais-sandbox.n-mercantil.com.br
+    gateway: istio-system/istio-ingressgateway
+  server:
+    global:
+      scrape_interval: 15s
+    persistentVolume:
+      enabled: true
+      size: 10Gi
+
+# Configuração do Grafana
+grafana:
+  enabled: true
+  service:
+    type: ClusterIP
+    port: 3000
+  ingress:
+    enabled: true
+    hosts:
+      - istio-grafana.plataformammais-sandbox.n-mercantil.com.br
+    gateway: istio-system/istio-ingressgateway
+  adminPassword: admin  # Alterar senha para produção
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          url: http://prometheus.istio-system.svc.cluster.local:9090
+          access: proxy
+          isDefault: true
