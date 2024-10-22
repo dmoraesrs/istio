@@ -1,13 +1,2 @@
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: argocd-namespace-access
-  namespace: observabilidade
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: admin
-subjects:
-  - kind: ServiceAccount
-    name: <service-account-name>
-    namespace: argocd
+W1022 20:36:46.864087       1 client_config.go:615] Neither --kubeconfig nor --master was specified.  Using the inClusterConfig.  This might not work.
+{"level":"info","msg":"secret already exists","source":"cmd/create.go:33","time":"2024-10-22T20:36:46Z"}
