@@ -1,1 +1,2 @@
-kubectl get pod argocd-server-xxxx -n argocd -o jsonpath="{.spec.serviceAccountName}"
+kubectl get serviceaccount argocd -n argocd -o yaml
+
