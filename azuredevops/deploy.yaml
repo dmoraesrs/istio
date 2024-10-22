@@ -1,18 +1,19 @@
-prometheus:
-  enabled: true
-  service:
-    type: ClusterIP
-    port: 9090
-  ingress:
-    enabled: true
-    hosts:
-      - prometheus.plataformammais-sandbox.n-mercantil.com.br
-    gateway: istio-system/istio-ingressgateway
-  server:
-    global:
-      scrape_interval: 15s
-    persistentVolume:
-      enabled: true
-      size: 50Gi
-  nodeSelector:
-    layer: apps
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: kiali-virtualservice
+  namespace: istio-system
+spec:
+  hosts:
+    - istio-kiali.plataformammais-sandbox.n-mercantil.com.br
+  gateways:
+    - istio-system/istio-ingressgateway
+  http:
+    - match:
+        - uri:
+            prefix: "/"
+      route:
+        - destination:
+            host: kiali-service
+            port:
+              number: 20001
