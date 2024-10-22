@@ -1,1 +1,1 @@
-kubectl get pod -n argocd -o jsonpath="{.items[*].spec.serviceAccountName}"
+kubectl get rolebinding,clusterrolebinding --all-namespaces --field-selector subjects.name=<service-account-name> -o yaml
