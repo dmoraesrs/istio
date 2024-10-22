@@ -12,7 +12,6 @@ spec:
     chart: kube-prometheus-stack  # Nome do Helm Chart
     targetRevision: 54.2.2  # Versão específica do chart
     path: sistemas/plataforma-m-mais/manifestos/observabilidade
-    targetRevision: HEAD
     helm:
       valueFiles:
         - namespace.yaml  # Configuração de namespace
@@ -20,6 +19,7 @@ spec:
   destination:
     server: https://kubernetes.default.svc  # Cluster de destino
     namespace: observabilidade  # Namespace onde será implantado
+    createNamespace: true  # Cria o namespace automaticamente
   syncPolicy:
     automated:
       prune: true  # Remove recursos não utilizados
