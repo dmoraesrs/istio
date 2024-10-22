@@ -8,30 +8,17 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://prometheus-community.github.io/helm-charts
+    repoURL: https://prometheus-community.github.io/helm-charts  # Repositório Helm
     chart: kube-prometheus-stack  # Nome do Helm Chart
     targetRevision: 54.2.2  # Versão específica do chart
     helm:
       valueFiles:
-        - namespace.yaml  # Arquivo de valores para namespaces
-        - values-sandbox.yaml  # Valores específicos do ambiente sandbox
-      values: |
-        prometheus:
-          service:
-            type: ClusterIP
-            port: 9090
-          retention: 15d  # Exemplo: retenção ajustada para 15 dias
-        alertmanager:
-          enabled: true
-        grafana:
-          adminPassword: "admin"  # Definição de senha admin
-          service:
-            type: NodePort  # Tipo de serviço NodePort
-            nodePort: 30000
+        - namespace.yaml  # Configuração de namespace
+        - values-sandbox.yaml  # Configurações específicas para o ambiente sandbox
   destination:
-    server: https://kubernetes.default.svc
-    namespace: observabilidade
+    server: https://kubernetes.default.svc  # Cluster de destino
+    namespace: observabilidade  # Namespace onde será implantado
   syncPolicy:
     automated:
-      prune: true  # Remove recursos que não estão mais no Git
-      selfHeal: true  # Corrige mudanças feitas manualmente
+      prune: true  # Remove recursos não utilizados
+      selfHeal: true  # Corrige automaticamente alterações manuais
