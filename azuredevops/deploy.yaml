@@ -1,26 +1,39 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
-metadata:
-  name: argocd
-  namespace: plataforma-m-mais
-  finalizers:
-    - resources-finalizer.argocd.argoproj.io
-spec:
-  project: default
-  source:
-    repoURL: https://devops.mercantil.com.br/Tecnologia_MB/MB/_git/MB.DVX.AppOfApps.PlataformaM_Mais
-    path: sistemas/plataforma-m-mais/manifestos/argocd
-    targetRevision: HEAD
-    helm:
-      valueFiles:
-        - values-sandbox.yaml
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: plataforma-m-mais
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-  # Criação automática do namespace
-  namespaceResource:
-    createNamespace: true
+# Configuração do Prometheus
+prometheus:
+  enabled: true
+  service:
+    type: ClusterIP
+    port: 9090
+  ingress:
+    enabled: true
+    hosts:
+      - istio-prometheus.plataformammais-sandbox.n-mercantil.com.br
+    gateway: istio-system/istio-ingressgateway
+  server:
+    global:
+      scrape_interval: 15s
+    persistentVolume:
+      enabled: true
+      size: 50Gi
+
+# Configuração do Grafana
+grafana:
+  enabled: true
+  service:
+    type: ClusterIP
+    port: 3000
+  ingress:
+    enabled: true
+    hosts:
+      - istio-grafana.plataformammais-sandbox.n-mercantil.com.br
+    gateway: istio-system/istio-ingressgateway
+  adminPassword: admin
+  datasources:
+    datasources.yaml:
+      apiVersion: 1
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          url: http://prometheus.istio-system.svc.cluster.local:9090
+          access: proxy
+          isDefault: true
