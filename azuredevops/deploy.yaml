@@ -1,1 +1,1 @@
-kubectl get projects.argoproj.io -n argocd -o yaml
+kubectl get pod -n argocd -o jsonpath="{.items[*].spec.serviceAccountName}"
