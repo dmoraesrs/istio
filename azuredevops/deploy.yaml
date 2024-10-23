@@ -1,13 +1,31 @@
-data:
-  config.yaml: |
-    external_services:
-      prometheus:
-        url: http://prometheus.observabilidade.svc.cluster.local:9090
-      grafana:
-        url: http://grafana.observabilidade.svc.cluster.local:3000
-        enabled: true
-        auth:
-          type: none  # Sem autenticação para Grafana
-    deployment:
-      accessible_namespaces:
-        - '**'
+        prometheusOperator:
+          admissionWebhooks:
+            enabled: false
+        prometheus:
+          enabled: true
+          service:
+            type: ClusterIP
+            ports: 
+              http: 9090
+          ingress:
+            enabled: true
+            hosts:
+              - prometheus.plataformammais-sandbox.n-mercantil.com.br
+            gateway: istio-system/istio-ingressgateway
+          server:
+            global:
+              scrape_interval: 15s
+            persistentVolume:
+              enabled: true
+              size: 50Gi
+          image:
+            nodeSelector:
+              layer: apps
+            affinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: layer
+                        operator: In
+                        values:
+                        - apps
