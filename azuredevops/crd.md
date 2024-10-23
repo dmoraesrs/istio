@@ -1,15 +1,1 @@
-authorizationpolicies.security.istio.io                2024-10-15T16:04:48Z
-destinationrules.networking.istio.io                   2024-10-15T16:04:48Z
-envoyfilters.networking.istio.io                       2024-10-15T16:04:48Z
-gateways.networking.istio.io                           2024-10-15T16:04:48Z
-istiooperators.install.istio.io                        2024-10-15T12:58:29Z
-peerauthentications.security.istio.io                  2024-10-15T16:04:48Z
-proxyconfigs.networking.istio.io                       2024-10-15T16:04:48Z
-requestauthentications.security.istio.io               2024-10-15T16:04:48Z
-serviceentries.networking.istio.io                     2024-10-15T16:04:48Z
-sidecars.networking.istio.io                           2024-10-15T16:04:49Z
-telemetries.telemetry.istio.io                         2024-10-15T16:04:49Z
-virtualservices.networking.istio.io                    2024-10-15T16:04:49Z
-wasmplugins.extensions.istio.io                        2024-10-15T16:04:49Z
-workloadentries.networking.istio.io                    2024-10-15T16:04:50Z
-workloadgroups.networking.istio.io                     2024-10-15T16:04:50Z
+Data source error: {"error":{"code":"DM_GWPipeline_Gateway_InvalidConnectionCredentials","pbi.error":{"code":"DM_GWPipeline_Gateway_InvalidConnectionCredentials","parameters":{},"details":[{"code":"DM_ErrorDetailNameCode_UnderlyingErrorCode","detail":{"type":1,"value":"-2147467259"}},{"code":"DM_ErrorDetailNameCode_UnderlyingErrorMessage","detail":{"type":1,"value":"The credentials provided for the SQL source are invalid. (Source at db01.cc1mb5idcea9.us-east-1.rds.amazonaws.com;replica_bi.)"}},{"code":"DM_ErrorDetailNameCode_UnderlyingHResult","detail":{"type":1,"value":"-2147467259"}},{"code":"Microsoft.Data.Mashup.CredentialError.DataSourceKind","detail":{"type":1,"value":"SQL"}},{"code":"Microsoft.Data.Mashup.CredentialError.DataSourcePath","detail":{"type":1,"value":"db01.cc1mb5idcea9.us-east-1.rds.amazonaws.com;replica_bi"}},{"code":"Microsoft.Data.Mashup.CredentialError.Reason","detail":{"type":1,"value":"AccessUnauthorized"}},{"code":"Microsoft.Data.Mashup.MashupSecurityException.DataSources","detail":{"type":1,"value":"[{\"kind\":\"SQL\",\"path\":\"db01.cc1mb5idcea9.us-east-1.rds.amazonaws.com;replica_bi\"}]"}},{"code":"Microsoft.Data.Mashup.MashupSecurityException.Reason","detail":{"type":1,"value":"AccessUnauthorized"}}],"exceptionCulprit":1}}} Table: ProcedimentosRealizados.
